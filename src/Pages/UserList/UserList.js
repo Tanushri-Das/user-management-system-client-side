@@ -17,7 +17,7 @@ const UserList = () => {
 
   const handleDelete = (id) => {
     dispatch(deleteUser(id));
-    toast.success("Delete user successfully!");
+    toast.error("Delete user successfully!");
   };
 
   const handleAddUser = () => {
