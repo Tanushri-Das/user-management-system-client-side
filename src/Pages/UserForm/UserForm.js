@@ -4,7 +4,6 @@ import { createUser, updateUser } from "../../features/users/userSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
-
 const UserForm = () => {
   const navigate = useNavigate();
   const { id } = useParams(); // Get the user ID from the URL parameter
@@ -75,59 +74,81 @@ const UserForm = () => {
   };
 
   return (
-    <div className="my-5">
-      <form className="w-50 mx-auto shadow rounded-2 p-5" onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label htmlFor="name" className="form-label fw-semibold">
-            Name
-          </label>
-          <input
-            type="text"
-            className={`form-control ${formErrors.name ? "is-invalid" : ""}`}
-            id="name"
-            name="name"
-            placeholder="Enter your name"
-            value={formData.name}
-            onChange={handleChange}
-          />
-          {formErrors.name && <div className="invalid-feedback fw-semibold">Name is required</div>}
+    <div class="container my-5">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10 col-sm-12">
+          <form class="shadow rounded-2 p-5" onSubmit={handleSubmit}>
+            <div class="mb-3">
+              <label for="name" class="form-label fw-semibold">
+                Name
+              </label>
+              <input
+                type="text"
+                className={`form-control ${
+                  formErrors.name ? "is-invalid" : ""
+                }`}
+                id="name"
+                name="name"
+                placeholder="Enter your name"
+                value={formData.name}
+                onChange={handleChange}
+              />
+              {formErrors.name && (
+                <div className="invalid-feedback fw-semibold">
+                  Name is required
+                </div>
+              )}
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label fw-semibold">
+                Email
+              </label>
+              <input
+                type="email"
+                className={`form-control ${
+                  formErrors.email ? "is-invalid" : ""
+                }`}
+                id="email"
+                name="email"
+                placeholder="Enter your email"
+                value={formData.email}
+                onChange={handleChange}
+              />
+              {formErrors.email && (
+                <div className="invalid-feedback fw-semibold">
+                  Email is required
+                </div>
+              )}
+            </div>
+            <div class="mb-3">
+              <label for="phone" class="form-label fw-semibold">
+                Phone
+              </label>
+              <input
+                type="number"
+                className={`form-control ${
+                  formErrors.phone ? "is-invalid" : ""
+                }`}
+                id="phone"
+                name="phone"
+                placeholder="Enter your phone number"
+                value={formData.phone}
+                onChange={handleChange}
+              />
+              {formErrors.phone && (
+                <div className="invalid-feedback fw-semibold">
+                  Phone is required
+                </div>
+              )}
+            </div>
+            <div className="d-flex justify-content-center align-items-center">
+              <button type="submit" className="btn btn-success">
+                {id ? "Update User" : "Create User"}
+              </button>
+            </div>
+          </form>
         </div>
-        <div className="mb-3">
-          <label htmlFor="email" className="form-label fw-semibold">
-            Email
-          </label>
-          <input
-            type="email"
-            className={`form-control ${formErrors.email ? "is-invalid" : ""}`}
-            id="email"
-            name="email"
-            placeholder="Enter your email"
-            value={formData.email}
-            onChange={handleChange}
-          />
-          {formErrors.email && <div className="invalid-feedback fw-semibold">Email is required</div>}
-        </div>
-        <div className="mb-3">
-          <label htmlFor="phone" className="form-label fw-semibold">
-            Phone
-          </label>
-          <input
-            type="number"
-            className={`form-control ${formErrors.phone ? "is-invalid" : ""}`}
-            id="phone"
-            name="phone"
-            placeholder="Enter your phone number"
-            value={formData.phone}
-            onChange={handleChange}
-          />
-          {formErrors.phone && <div className="invalid-feedback fw-semibold">Phone is required</div>}
-        </div>
-        <div className="d-flex justify-content-center align-items-center">
-          <button type="submit" className="btn btn-success">
-            {id ? "Update User" : "Create User"}
-          </button>
-        </div>
-      </form>
+      </div>
     </div>
   );
 };
