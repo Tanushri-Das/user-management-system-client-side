@@ -1,3 +1,5 @@
+// UserForm.js
+
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createUser, updateUser } from "../../features/users/userSlice";
@@ -51,29 +53,38 @@ const UserForm = () => {
 
     if (id) {
       // If an ID is provided, update the user
-      dispatch(updateUser({ id, formData }));
-      toast.success("Update user details successfully!");
-    }
-    else {
+      dispatch(updateUser({ id, formData }))
+        .unwrap()
+        .then((response) => {
+          toast.success("Update user details successfully!");
+          setFormData({
+            name: "",
+            email: "",
+            phone: "",
+          });
+          navigate("/");
+        })
+        .catch((error) => {
+          console.log(error); // Log any error
+        });
+    } else {
       // If no ID is provided, create a new user
       await dispatch(createUser(formData))
         .unwrap()
         .then((response) => {
           console.log(response); // Log the response data
           toast.success("User created successfully!");
+          setFormData({
+            name: "",
+            email: "",
+            phone: "",
+          });
+          navigate("/");
         })
         .catch((error) => {
           console.log(error); // Log any error
         });
     }
-
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-    });
-
-    navigate("/");
   };
 
   const handleChange = (e) => {

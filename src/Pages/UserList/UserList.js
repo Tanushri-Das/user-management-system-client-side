@@ -1,3 +1,4 @@
+// UserList.js
 
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -16,18 +17,26 @@ const UserList = () => {
   }, [dispatch]);
 
   const handleDelete = (id) => {
-    dispatch(deleteUser(id));
-    toast.error("Deleted user successfully!");
+    dispatch(deleteUser(id))
+      .unwrap()
+      .then(() => {
+        toast.error("Deleted user successfully!");
+      })
+      .catch((error) => {
+        console.log(error); // Log any error
+      });
   };
 
   const handleAddUser = () => {
     navigate("/users/add");
   };
+
   const handleEditUser = (id) => {
     navigate(`/users/edit/${id}`);
   };
+
   if (loading) {
-    return <Spinner/>;
+    return <Spinner />;
   }
 
   if (error) {
@@ -37,7 +46,10 @@ const UserList = () => {
   return (
     <div className="my-5">
       <div className="d-flex justify-content-center mb-5">
-        <button className="btn btn-primary fw-semibold" onClick={handleAddUser}>
+        <button
+          className="btn btn-primary fw-semibold"
+          onClick={handleAddUser}
+        >
           Add New User
         </button>
       </div>
@@ -69,14 +81,14 @@ const UserList = () => {
                         View
                       </Link>
                       <Link
-                       onClick={() => handleEditUser(user._id)} // Pass the user ID to handleEditUser
-                       className="btn btn-secondary fw-semibold me-1 mb-2 sm:mb-0"
+                        onClick={() => handleEditUser(user._id)} // Pass the user ID to handleEditUser
+                        className="btn btn-secondary fw-semibold me-1 mb-2 sm:mb-0"
                       >
                         Edit
                       </Link>
                       <Link
-                       onClick={() => handleDelete(user._id)}
-                       className="btn  btn-danger text-white fw-semibold me-1 mb-2 sm:mb-0"
+                        onClick={() => handleDelete(user._id)}
+                        className="btn  btn-danger text-white fw-semibold me-1 mb-2 sm:mb-0"
                       >
                         Delete
                       </Link>

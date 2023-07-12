@@ -1,3 +1,4 @@
+// userSlice.js
 
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
@@ -6,7 +7,9 @@ export const fetchUsers = createAsyncThunk(
   "user/fetchUsers",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get("https://user-management-system-server-side.vercel.app/users");
+      const response = await axios.get(
+        "https://user-management-system-server-side.vercel.app/users"
+      );
       console.log(response.data); // Log the fetched users
       return response.data;
     } catch (error) {
@@ -14,17 +17,7 @@ export const fetchUsers = createAsyncThunk(
     }
   }
 );
-export const fetchUser = createAsyncThunk(
-  "user/fetchUser",
-  async (id, { rejectWithValue }) => {
-    try {
-      const response = await axios.get(`https://user-management-system-server-side.vercel.app/users/${id}`);
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
-  }
-);
+
 export const createUser = createAsyncThunk(
   "user/createUser",
   async (formData, { rejectWithValue }) => {
@@ -41,7 +34,9 @@ export const createUser = createAsyncThunk(
 );
 
 export const deleteUser = createAsyncThunk("user/deleteUser", async (id) => {
-  await axios.delete(`https://user-management-system-server-side.vercel.app/users/${id}`);
+  await axios.delete(
+    `https://user-management-system-server-side.vercel.app/users/${id}`
+  );
   return id;
 });
 
@@ -53,7 +48,7 @@ export const updateUser = createAsyncThunk(
         `https://user-management-system-server-side.vercel.app/users/${id}`,
         formData
       );
-      return response.data;
+      return { id, user: response.data }; // Include the updated user data in the payload
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -91,8 +86,7 @@ const userSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.users.push(action.payload);
-      })            
-
+      })
       .addCase(createUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
@@ -118,25 +112,13 @@ const userSlice = createSlice({
       .addCase(updateUser.fulfilled, (state, action) => {
         state.loading = false;
         state.error = null;
-        // Update the user in the state
-        state.users = state.users.map((user) =>
-          user._id === action.payload._id ? action.payload : user
+        const { id, user } = action.payload;
+        // Update the user in the state with the updated user data
+        state.users = state.users.map((u) =>
+          u._id === id ? user : u
         );
       })
       .addCase(updateUser.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
-      .addCase(fetchUser.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(fetchUser.fulfilled, (state, action) => {
-        state.loading = false;
-        state.error = null;
-        state.users.push(action.payload);
-      })
-      .addCase(fetchUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
