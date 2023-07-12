@@ -6,7 +6,7 @@ export const fetchUsers = createAsyncThunk(
   "user/fetchUsers",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get("http://localhost:5000/users");
+      const response = await axios.get("https://user-management-system-server-side.vercel.app/users");
       console.log(response.data); // Log the fetched users
       return response.data;
     } catch (error) {
@@ -18,7 +18,7 @@ export const fetchUser = createAsyncThunk(
   "user/fetchUser",
   async (id, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`http://localhost:5000/users/${id}`);
+      const response = await axios.get(`https://user-management-system-server-side.vercel.app/users/${id}`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -30,7 +30,7 @@ export const createUser = createAsyncThunk(
   async (formData, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/users",
+        "https://user-management-system-server-side.vercel.app/users",
         formData
       );
       return response.data;
@@ -41,7 +41,7 @@ export const createUser = createAsyncThunk(
 );
 
 export const deleteUser = createAsyncThunk("user/deleteUser", async (id) => {
-  await axios.delete(`http://localhost:5000/users/${id}`);
+  await axios.delete(`https://user-management-system-server-side.vercel.app/users/${id}`);
   return id;
 });
 
@@ -50,7 +50,7 @@ export const updateUser = createAsyncThunk(
   async ({ id, formData }, { rejectWithValue }) => {
     try {
       const response = await axios.put(
-        `http://localhost:5000/users/${id}`,
+        `https://user-management-system-server-side.vercel.app/users/${id}`,
         formData
       );
       return response.data;
