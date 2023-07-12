@@ -90,8 +90,9 @@ const userSlice = createSlice({
       .addCase(createUser.fulfilled, (state, action) => {
         state.loading = false;
         state.error = null;
-        state.users = action.payload;
-      })
+        state.users.push(action.payload);
+      })            
+
       .addCase(createUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;

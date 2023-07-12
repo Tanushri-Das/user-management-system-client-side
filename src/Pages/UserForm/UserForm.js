@@ -36,7 +36,7 @@ const UserForm = () => {
     }
   }, [id, users]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validate form fields
@@ -53,10 +53,18 @@ const UserForm = () => {
       // If an ID is provided, update the user
       dispatch(updateUser({ id, formData }));
       toast.success("Update user details successfully!");
-    } else {
+    }
+    else {
       // If no ID is provided, create a new user
-      dispatch(createUser(formData));
-      toast.success("User created successfully!");
+      await dispatch(createUser(formData))
+        .unwrap()
+        .then((response) => {
+          console.log(response); // Log the response data
+          toast.success("User created successfully!");
+        })
+        .catch((error) => {
+          console.log(error); // Log any error
+        });
     }
 
     setFormData({
