@@ -28,7 +28,7 @@ const UserList = () => {
         toast.error("Deleted user successfully!");
       })
       .catch((error) => {
-        console.log(error); // Log any error
+        console.log(error);
       });
   };
 
@@ -55,7 +55,7 @@ const UserList = () => {
           Add New User
         </button>
       </div>
-      <div className="container-fluid">
+      <div className="container">
         <div className="row justify-content-center">
           <div className="col-12">
             <div className="table-responsive" id="no-more-tables">

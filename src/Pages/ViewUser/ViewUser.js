@@ -1,9 +1,8 @@
-
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchUsers } from "../../features/users/userSlice";
 import { useNavigate, useParams } from "react-router-dom";
-import '../ViewUser/ViewUser.css';
+import "../ViewUser/ViewUser.css";
 import Spinner from "../../Components/Spinner/Spinner";
 
 const UserDetails = () => {
@@ -42,7 +41,6 @@ const UserDetails = () => {
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-12">
-            
             <div className="table-responsive" id="no-more-tables">
               <table className="table bg-white">
                 <thead className="text-light">
@@ -76,6 +74,3 @@ const UserDetails = () => {
 };
 
 export default UserDetails;
-
-
-
