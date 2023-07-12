@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createUser, updateUser, fetchUsers } from "../../features/users/userSlice";
+import { createUser, updateUser } from "../../features/users/userSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -23,11 +23,8 @@ const UserForm = () => {
   const { users } = useSelector((state) => state.user);
 
   useEffect(() => {
-    // Fetch the users from the Redux store
-    dispatch(fetchUsers());
-
     // If an ID is provided, populate the form with the existing user data
-    if (id) {
+    if (id && users.length > 0) {
       const user = users.find((user) => user._id === id);
       if (user) {
         setFormData({
@@ -37,7 +34,8 @@ const UserForm = () => {
         });
       }
     }
-  }, [dispatch, id, users]);
+  }, [id, users]);
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -54,38 +52,29 @@ const UserForm = () => {
 
     if (id) {
       // If an ID is provided, update the user
-      dispatch(updateUser({ id, formData }))
-        .unwrap()
-        .then((response) => {
-          toast.success("Update user details successfully!");
-          setFormData({
-            name: "",
-            email: "",
-            phone: "",
-          });
-          navigate("/");
-        })
-        .catch((error) => {
-          console.log(error); // Log any error
-        });
-    } else {
+      dispatch(updateUser({ id, formData }));
+      toast.success("Update user details successfully!");
+    }
+    else {
       // If no ID is provided, create a new user
       await dispatch(createUser(formData))
         .unwrap()
         .then((response) => {
           console.log(response); // Log the response data
           toast.success("User created successfully!");
-          setFormData({
-            name: "",
-            email: "",
-            phone: "",
-          });
-          navigate("/");
         })
         .catch((error) => {
           console.log(error); // Log any error
         });
     }
+
+    setFormData({
+      name: "",
+      email: "",
+      phone: "",
+    });
+
+    navigate("/");
   };
 
   const handleChange = (e) => {
