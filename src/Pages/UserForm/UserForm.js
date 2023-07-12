@@ -1,8 +1,6 @@
-// UserForm.js
-
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createUser, updateUser } from "../../features/users/userSlice";
+import { createUser, updateUser, fetchUsers } from "../../features/users/userSlice";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -25,6 +23,9 @@ const UserForm = () => {
   const { users } = useSelector((state) => state.user);
 
   useEffect(() => {
+    // Fetch the users from the Redux store
+    dispatch(fetchUsers());
+
     // If an ID is provided, populate the form with the existing user data
     if (id) {
       const user = users.find((user) => user._id === id);
@@ -36,7 +37,7 @@ const UserForm = () => {
         });
       }
     }
-  }, [id, users]);
+  }, [dispatch, id, users]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

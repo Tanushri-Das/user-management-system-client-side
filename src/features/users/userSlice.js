@@ -32,7 +32,19 @@ export const createUser = createAsyncThunk(
     }
   }
 );
-
+export const fetchUser = createAsyncThunk(
+  "user/fetchUser",
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        `https://user-management-system-server-side.vercel.app/users/${id}`
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 export const deleteUser = createAsyncThunk("user/deleteUser", async (id) => {
   await axios.delete(
     `https://user-management-system-server-side.vercel.app/users/${id}`
@@ -112,11 +124,12 @@ const userSlice = createSlice({
       .addCase(updateUser.fulfilled, (state, action) => {
         state.loading = false;
         state.error = null;
-        const { id, user } = action.payload;
-        // Update the user in the state with the updated user data
-        state.users = state.users.map((u) =>
-          u._id === id ? user : u
-        );
+        // Update the user in the state
+        const updatedUser = action.payload;
+        const index = state.users.findIndex((user) => user._id === updatedUser._id);
+        if (index !== -1) {
+          state.users[index] = updatedUser;
+        }
       })
       .addCase(updateUser.rejected, (state, action) => {
         state.loading = false;
